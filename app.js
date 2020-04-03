@@ -12,84 +12,64 @@
  * ANY KIND, either express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
+var data = 
+    [
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-0.123559,
+                    50.832679
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "category": "cafe",
+                "hours": "8am - 9:30pm",
+                "description": "Grab a freshly brewed coffee, a decadent cake and relax in our idyllic cafe. We're part of a larger chain of patisseries and cafes.",
+                "name": "Josie's Cafe Brighton",
+                "phone": "+44 1313 131313",
+                "storeid": "11"
+            }
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-3.319575,
+                    52.517827
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "category": "cafe",
+                "hours": "8am - 9:30pm",
+                "description": "Come in and unwind at this idyllic cafe with fresh coffee and home made cakes. We're part of a larger chain of patisseries and cafes.",
+                "name": "Josie's Cafe Newtown",
+                "phone": "+44 1414 141414",
+                "storeid": "12"
+            }
+        },
+        {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    1.158167,
+                    52.071634
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "category": "cafe",
+                "hours": "8am - 9:30pm",
+                "description": "Fresh coffee and delicious cakes in an snug cafe. We're part of a larger chain of patisseries and cafes.",
+                "name": "Josie's Cafe Ipswich",
+                "phone": "+44 1717 17171",
+                "storeid": "13"
+            }
+        }
+    ]
 
-// Style credit: https://snazzymaps.com/style/1/pale-dawn
-const mapStyle = [{
-  'featureType': 'administrative',
-  'elementType': 'all',
-  'stylers': [{
-    'visibility': 'on',
-  },
-  {
-    'lightness': 33,
-  },
-  ],
-},
-{
-  'featureType': 'landscape',
-  'elementType': 'all',
-  'stylers': [{
-    'color': '#f2e5d4',
-  }],
-},
-{
-  'featureType': 'poi.park',
-  'elementType': 'geometry',
-  'stylers': [{
-    'color': '#c5dac6',
-  }],
-},
-{
-  'featureType': 'poi.park',
-  'elementType': 'labels',
-  'stylers': [{
-    'visibility': 'on',
-  },
-  {
-    'lightness': 20,
-  },
-  ],
-},
-{
-  'featureType': 'road',
-  'elementType': 'all',
-  'stylers': [{
-    'lightness': 20,
-  }],
-},
-{
-  'featureType': 'road.highway',
-  'elementType': 'geometry',
-  'stylers': [{
-    'color': '#c5c6c6',
-  }],
-},
-{
-  'featureType': 'road.arterial',
-  'elementType': 'geometry',
-  'stylers': [{
-    'color': '#e4d7c6',
-  }],
-},
-{
-  'featureType': 'road.local',
-  'elementType': 'geometry',
-  'stylers': [{
-    'color': '#fbfaf7',
-  }],
-},
-{
-  'featureType': 'water',
-  'elementType': 'all',
-  'stylers': [{
-    'visibility': 'on',
-  },
-  {
-    'color': '#acbcc9',
-  },
-  ],
-},
-];
+
+
 
 // Escapes HTML characters in a template literal string, to prevent XSS.
 // See https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
@@ -110,116 +90,44 @@ function sanitizeHTML(strings) {
  */
 function initMap() {
   // Create the map.
-  const map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: {lat: 52.632469, lng: -1.689423},
-    styles: mapStyle,
-  });
+  var latitude = 52.632469;
+  var longitude = -1.689423;
+  navigator.geolocation.getCurrentPosition(function(position) {
+    latitude = position.coords.latitude;
+    longitude = position.coords.longitude;
 
-  // Load the stores GeoJSON onto the map.
-  map.data.loadGeoJson('stores.json', {idPropertyName: 'storeid'});
-
-  // Define the custom marker icons, using the store's "category".
-  map.data.setStyle((feature) => {
-    return {
-      icon: {
-        url: `img/icon_${feature.getProperty('category')}.jpeg`,
-        scaledSize: new google.maps.Size(64, 64),
-      },
-    };
+    console.log(latitude);
+    console.log(longitude);
   });
 
   const apiKey = 'AIzaSyDVePLEyIG6-3OBo-Zo9CCVCDQtzssSl6w';
-  const infoWindow = new google.maps.InfoWindow();
 
-  // Show the information for a store when its marker is clicked.
-  map.data.addListener('click', (event) => {
-    const category = event.feature.getProperty('category');
-    const name = event.feature.getProperty('name');
-    const description = event.feature.getProperty('description');
-    const hours = event.feature.getProperty('hours');
-    const phone = event.feature.getProperty('phone');
-    const position = event.feature.getGeometry().get();
-    const content = sanitizeHTML`
-      <img style="float:left; width:200px; margin-top:30px" src="img/icon_${category}.jpeg">
-      <div style="margin-left:220px; margin-bottom:20px;">
-        <h2>${name}</h2><p>${description}</p>
-        <p><b>Open:</b> ${hours}<br/><b>Phone:</b> ${phone}</p>
-        <p><img src="https://maps.googleapis.com/maps/api/streetview?size=350x120&location=${position.lat()},${position.lng()}&key=${apiKey}"></p>
-      </div>
-      `;
+  const rankedStores = calculateDistances(latitude, longitude);
+  console.log(rankedStores);
+  showStoresList(rankedStores);
+  // calculateDistances(latitude, longitude);
+}
 
-    infoWindow.setContent(content);
-    infoWindow.setPosition(position);
-    infoWindow.setOptions({pixelOffset: new google.maps.Size(0, -30)});
-    infoWindow.open(map);
-  });
-
-  // Build and add the search bar
-  const card = document.createElement('div');
-  const titleBar = document.createElement('div');
-  const title = document.createElement('div');
-  const container = document.createElement('div');
-  const input = document.createElement('input');
-  const options = {
-    types: ['address'],
-    componentRestrictions: {country: 'gb'},
-  };
-
-  card.setAttribute('id', 'pac-card');
-  title.setAttribute('id', 'title');
-  title.textContent = 'Find the nearest store';
-  titleBar.appendChild(title);
-  container.setAttribute('id', 'pac-container');
-  input.setAttribute('id', 'pac-input');
-  input.setAttribute('type', 'text');
-  input.setAttribute('placeholder', 'Enter an address');
-  container.appendChild(input);
-  card.appendChild(titleBar);
-  card.appendChild(container);
-  map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-
-  // Make the search bar into a Places Autocomplete search bar and select
-  // which detail fields should be returned about the place that
-  // the user selects from the suggestions.
-  const autocomplete = new google.maps.places.Autocomplete(input, options);
-
-  autocomplete.setFields(
-      ['address_components', 'geometry', 'name']);
-
-  // Set the origin point when the user selects an address
-  const originMarker = new google.maps.Marker({map: map});
-  originMarker.setVisible(false);
-  let originLocation = map.getCenter();
-
-  autocomplete.addListener('place_changed', async () => {
-    originMarker.setVisible(false);
-    originLocation = map.getCenter();
-    const place = autocomplete.getPlace();
-
-    if (!place.geometry) {
-      // User entered the name of a Place that was not suggested and
-      // pressed the Enter key, or the Place Details request failed.
-      window.alert('No address available for input: \'' + place.name + '\'');
-      return;
+function distance(lat1, lon1, lat2, lon2, unit) {
+  if ((lat1 == lat2) && (lon1 == lon2)) {
+    return 0;
+  }
+  else {
+    var radlat1 = Math.PI * lat1/180;
+    var radlat2 = Math.PI * lat2/180;
+    var theta = lon1-lon2;
+    var radtheta = Math.PI * theta/180;
+    var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+    if (dist > 1) {
+      dist = 1;
     }
-
-    // Recenter the map to the selected address
-    originLocation = place.geometry.location;
-    map.setCenter(originLocation);
-    map.setZoom(9);
-    // console.log(place);
-
-    originMarker.setPosition(originLocation);
-    originMarker.setVisible(true);
-
-    // Use the selected address as the origin to calculate distances
-    // to each of the store locations
-    const rankedStores = await calculateDistances(map.data, originLocation);
-    showStoresList(map.data, rankedStores);
-
-    return;
-  });
+    dist = Math.acos(dist);
+    dist = dist * 180/Math.PI;
+    dist = dist * 60 * 1.1515;
+    if (unit=="K") { dist = dist * 1.609344 }
+    if (unit=="N") { dist = dist * 0.8684 }
+    return dist;
+  }
 }
 
 /**
@@ -231,59 +139,79 @@ function initMap() {
  * a distanceText, distanceVal, and storeid property, sorted ascending
  * by distanceVal.
  */
-async function calculateDistances(data, origin) {
+function calculateDistances(latitude, longitude) {
   const stores = [];
-  const destinations = [];
 
   // Build parallel arrays for the store IDs and destinations
   data.forEach((store) => {
-    const storeNum = store.getProperty('storeid');
-    const storeLoc = store.getGeometry().get();
+    const storeLat = store.geometry.coordinates[0];
+    const storeLng = store.geometry.coordinates[1];
+    // console.log(storeLat);
+    // console.log(storeLng);
 
-    stores.push(storeNum);
-    destinations.push(storeLoc);
+    var dist = distance(latitude, longitude, storeLat, storeLng, "K");
+    // console.log(dist);
+
+    if(dist<8000)
+    {
+      const distanceObject = {
+                storeid: store.properties.storeid,
+                distanceVal: dist,
+              };
+      stores.push(distanceObject);
+    }
   });
 
-  // Retrieve the distances of each store from the origin
-  // The returned list will be in the same order as the destinations list
-  const service = new google.maps.DistanceMatrixService();
-  const getDistanceMatrix =
-    (service, parameters) => new Promise((resolve, reject) => {
-      service.getDistanceMatrix(parameters, (response, status) => {
-        if (status != google.maps.DistanceMatrixStatus.OK) {
-          reject(response);
-        } else {
-          const distances = [];
-          const results = response.rows[0].elements;
-          for (let j = 0; j < results.length; j++) {
-            const element = results[j];
-            const distanceText = element.distance.text;
-            const distanceVal = element.distance.value;
-            const distanceObject = {
-              storeid: stores[j],
-              distanceText: distanceText,
-              distanceVal: distanceVal,
-            };
-            distances.push(distanceObject);
-          }
-
-          resolve(distances);
-        }
-      });
-    });
-
-  const distancesList = await getDistanceMatrix(service, {
-    origins: [origin],
-    destinations: destinations,
-    travelMode: 'DRIVING',
-    unitSystem: google.maps.UnitSystem.METRIC,
-  });
-
-  distancesList.sort((first, second) => {
+  stores.sort((first, second) => {
     return first.distanceVal - second.distanceVal;
   });
 
-  return distancesList;
+  return stores;
+
+  // // Retrieve the distances of each store from the origin
+  // // The returned list will be in the same order as the destinations list
+  // const service = new google.maps.DistanceMatrixService();
+  // const getDistanceMatrix =
+  //   (service, parameters) => new Promise((resolve, reject) => {
+  //     service.getDistanceMatrix(parameters, (response, status) => {
+  //       if (status != google.maps.DistanceMatrixStatus.OK) {
+  //         reject(response);
+  //       } else {
+  //         const distances = [];
+  //         const results = response.rows[0].elements;
+  //         for (let j = 0; j < results.length; j++) {
+  //           const element = results[j];
+  //           const distanceText = element.distance.text;
+  //           const distanceVal = element.distance.value;
+  //           console.log(distanceText);
+  //           console.log(distanceVal);
+  //           // if(distanceVal <=5000){
+  //             const distanceObject = {
+  //               storeid: stores[j],
+  //               distanceText: distanceText,
+  //               distanceVal: distanceVal,
+  //             };
+  //             distances.push(distanceObject);
+  //           // }
+  //         }
+
+  //         resolve(distances);
+  //       }
+  //     });
+  //   });
+
+  // const distancesList = getDistanceMatrix(service, {
+  //   origins: [origin],
+  //   destinations: destinations,
+  //   travelMode: 'WALKING',
+  //   unitSystem: google.maps.UnitSystem.METRIC,
+  // });
+
+  // distancesList.sort((first, second) => {
+  //   return first.distanceVal - second.distanceVal;
+  // });
+
+  // return distancesList;
 }
 
 /**
@@ -293,7 +221,7 @@ async function calculateDistances(data, origin) {
  * @param {object[]} stores An array of objects with a distanceText,
  * distanceVal, and storeid property.
  */
-function showStoresList(data, stores) {
+function showStoresList(stores) {
   if (stores.length == 0) {
     console.log('empty stores');
     return;
@@ -321,14 +249,19 @@ function showStoresList(data, stores) {
 
   stores.forEach((store) => {
     // Add store details with text formatting
+    console.log(store);
+
     const name = document.createElement('p');
     name.classList.add('place');
-    const currentStore = data.getFeatureById(store.storeid);
-    name.textContent = currentStore.getProperty('name');
+
+    // const currentStore = data.getFeatureById(store.storeid);
+    // name.textContent = currentStore.getProperty('name');
+
+    name.textContent = store.storeid;
     panel.appendChild(name);
     const distanceText = document.createElement('p');
     distanceText.classList.add('distanceText');
-    distanceText.textContent = store.distanceText;
+    distanceText.textContent = store.distanceVal;
     panel.appendChild(distanceText);
   });
 
