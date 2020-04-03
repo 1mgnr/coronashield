@@ -21,7 +21,7 @@
     #map {
       height: 100%;
     }
-    
+
     html,
     body {
       height: 100%;
@@ -40,13 +40,13 @@
       -moz-box-sizing: border-box;
       outline: none;
     }
-    
+
     #pac-container {
       padding-top: 12px;
       padding-bottom: 12px;
       margin-right: 12px;
     }
-    
+
     #pac-input {
       background-color: #fff;
       font-family: Roboto;
@@ -57,11 +57,11 @@
       text-overflow: ellipsis;
       width: 400px;
     }
-    
+
     #pac-input:focus {
       border-color: #4d90fe;
     }
-    
+
     #title {
       color: #fff;
       background-color: #acbcc9;
@@ -69,7 +69,7 @@
       font-weight: 400;
       padding: 6px 12px;
     }
-    
+
     .hidden {
       display: none;
     }
@@ -85,11 +85,11 @@
       overflow-x: hidden;
       transition: all .2s ease-out;
     }
-    
+
     .open {
       width: 250px;
     }
-    
+
     .place {
       font-family: 'open sans', arial, sans-serif;
       font-size: 1.2em;
@@ -98,7 +98,7 @@
       padding-left: 18px;
       padding-right: 18px;
     }
-    
+
     .distanceText {
       color: silver;
       font-family: 'open sans', arial, sans-serif;
@@ -114,21 +114,19 @@
 <body>
   <!-- The div to hold the map -->
   <div id="map"></div>
-<!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-<script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.1.0/firebase-firestore.js"></script>
- <script type="text/javascript"src="firebase-config.js"></script>
-
-  <script src="seller.js"></script>
-  <!-- <script src="buyer.js"></script> -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVePLEyIG6-3OBo-Zo9CCVCDQtzssSl6w&libraries=places&callback=initMap">
-  </script>
-
- 
 </body>
+<script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-firestore.memory.js"></script>
+<!-- Don't change the format for any other products. -->
+<script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+
+<!-- etc. -->
+<script defer type="text/javascript" src="firebase-config.js"></script>
+
+<script src="seller.js"></script>
+<!-- <script src="buyer.js"></script> -->
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVePLEyIG6-3OBo-Zo9CCVCDQtzssSl6w&libraries=places&callback=initMap"></script>
 
 </html>
