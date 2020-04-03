@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="css/owl.carousel.min.css">
 <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
+
 <link rel="stylesheet" href="css/bootstrap-datepicker.css">
 
 <link rel="stylesheet" href="fonts/flaticon/font/flaticon.css">
@@ -49,7 +50,7 @@
       <div class="col-12 col-md-10 d-none d-xl-block">
         <nav class="site-navigation position-relative text-right" role="navigation">
           <ul class="site-menu js-clone-nav mr-auto d-none d-lg-block">
-            <li><a href="contact.html"><span>Setting</span></a></li>
+            <li><a href="setting.html"><span>Setting</span></a></li>
           </ul>
         </nav>
       </div>
@@ -74,32 +75,54 @@
     </div>
   </div>  
 
-  <!-- Traffic Section :D -->
-  <div class="site-section bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 mb-5" data-aos="fade" style="margin: 0 auto;">
-          <div class="p-5 bg-white" style="margin-top: -150px;">
-            <div class="section over-hide z-bigger"> 
-              <div class="section over-hide z-bigger">
-                <div class="container pb-5">
-                  <div class="row justify-content-center pb-5">
-                    <div class="col-12 pb-5">
+    <!-- Traffic Section :D -->
+    <div class="site-section bg-light">
+      <div class="container">
+        <div class="row" >
+           <div class="col-md-12 mb-5" data-aos="fade" style="margin: 0 auto;">
+            <div class="p-5 bg-white" style="margin-top: -150px;">
+              <div class="row">
 
-                      <input class="checkbox-tools" type="radio" name="tools" id="tool-1" checked>
-                      <label class="for-checkbox-tools" for="tool-1">
-                        <i class='uil uil-line-alt'></i>
-                        line
-                      </label>
+              <!-- Start of traffic radio :D -->
+                <div class="col-md-6 center-div z-bigger">
+                   <p class=" mx-auto" style="color: black; margin-left: 20px;">Traffic</p>
+                  <input class="checkbox-tools" type="radio" name="tools" id="tool-1" checked/>
+                  <label class="for-checkbox-tools" for="tool-1">
+                    <i class='uil uil-line-alt'></i>
+                    Low
+                  </label>
+                  <input class="checkbox-tools" type="radio" name="tools" id="tool-2"/>
+                  <label class="for-checkbox-tools" for="tool-2">
+                    <i class='uil uil-vector-square'></i>
+                    Medium
+                  </label>
+                  <input class="checkbox-tools" type="radio" name="tools" id="tool-3"/>
+                  <label class="for-checkbox-tools" for="tool-3">
+                    <i class='uil uil-vector-square'></i>
+                    High
+                  </label>
+                </div>
+              
+              <!-- End of traffic radio :D -->
 
-                      <input class="checkbox-tools" type="radio" name="tools" id="tool-2">
-                      <label class="for-checkbox-tools" for="tool-2">
-                        <i class='uil uil-vector-square'></i>
-                        square
-                      </label>
 
-                    </div>
-                  </div>
+               <!-- Start of Shop status radio :D -->
+                <div class="col-md-6 center-div z-bigger">
+                   <p class=" mx-auto" style="color: black; margin-left: 20px;">Shop Status</p>
+                    <input class="checkbox-tools3" type="radio" name="shop_radio" id="tool-5" checked/>
+                  <label class="for-checkbox-tools3" for="tool-5">
+                    <i class='uil uil-vector-square'></i>
+                    Closed
+                  </label>
+                  <input class="checkbox-tools2" type="radio" name="shop_radio" id="tool-4"/>
+                  <label class="for-checkbox-tools2" for="tool-4">
+                    <i class='uil uil-line-alt'></i>
+                    Open
+                  </label>
+                </div>
+              <!-- End of Shop status radio :D -->
+
+                
                 </div>
               </div>
             </div>
@@ -107,7 +130,6 @@
         </div>
       </div>
     </div>
-  </div>
 
   <!-- End List Section :D -->
   <footer class="site-footer">
