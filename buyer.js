@@ -105,7 +105,6 @@ function initMap() {
   const rankedStores = calculateDistances(latitude, longitude);
   console.log(rankedStores);
   showStoresList(rankedStores);
-  // calculateDistances(latitude, longitude);
 }
 
 function distance(lat1, lon1, lat2, lon2, unit) {
@@ -130,15 +129,6 @@ function distance(lat1, lon1, lat2, lon2, unit) {
   }
 }
 
-/**
- * Use Distance Matrix API to calculate distance from origin to each store.
- * @param {google.maps.Data} data The geospatial data object layer for the map
- * @param {google.maps.LatLng} origin Geographical coordinates in latitude
- * and longitude
- * @return {Promise<object[]>} n Promise fulfilled by an array of objects with
- * a distanceText, distanceVal, and storeid property, sorted ascending
- * by distanceVal.
- */
 function calculateDistances(latitude, longitude) {
   const stores = [];
 
@@ -146,11 +136,8 @@ function calculateDistances(latitude, longitude) {
   data.forEach((store) => {
     const storeLat = store.geometry.coordinates[0];
     const storeLng = store.geometry.coordinates[1];
-    // console.log(storeLat);
-    // console.log(storeLng);
 
     var dist = distance(latitude, longitude, storeLat, storeLng, "K");
-    // console.log(dist);
 
     if(dist<8000)
     {
@@ -167,60 +154,8 @@ function calculateDistances(latitude, longitude) {
   });
 
   return stores;
-
-  // // Retrieve the distances of each store from the origin
-  // // The returned list will be in the same order as the destinations list
-  // const service = new google.maps.DistanceMatrixService();
-  // const getDistanceMatrix =
-  //   (service, parameters) => new Promise((resolve, reject) => {
-  //     service.getDistanceMatrix(parameters, (response, status) => {
-  //       if (status != google.maps.DistanceMatrixStatus.OK) {
-  //         reject(response);
-  //       } else {
-  //         const distances = [];
-  //         const results = response.rows[0].elements;
-  //         for (let j = 0; j < results.length; j++) {
-  //           const element = results[j];
-  //           const distanceText = element.distance.text;
-  //           const distanceVal = element.distance.value;
-  //           console.log(distanceText);
-  //           console.log(distanceVal);
-  //           // if(distanceVal <=5000){
-  //             const distanceObject = {
-  //               storeid: stores[j],
-  //               distanceText: distanceText,
-  //               distanceVal: distanceVal,
-  //             };
-  //             distances.push(distanceObject);
-  //           // }
-  //         }
-
-  //         resolve(distances);
-  //       }
-  //     });
-  //   });
-
-  // const distancesList = getDistanceMatrix(service, {
-  //   origins: [origin],
-  //   destinations: destinations,
-  //   travelMode: 'WALKING',
-  //   unitSystem: google.maps.UnitSystem.METRIC,
-  // });
-
-  // distancesList.sort((first, second) => {
-  //   return first.distanceVal - second.distanceVal;
-  // });
-
-  // return distancesList;
 }
 
-/**
- * Build the content of the side panel from the sorted list of stores
- * and display it.
- * @param {google.maps.Data} data The geospatial data object layer for the map
- * @param {object[]} stores An array of objects with a distanceText,
- * distanceVal, and storeid property.
- */
 function showStoresList(stores) {
   if (stores.length == 0) {
     console.log('empty stores');
