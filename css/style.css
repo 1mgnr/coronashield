@@ -168,3 +168,33 @@ h1, h2, h3, h4, h5,
   .typed-words{
     color: black;
   }
+
+
+
+  .buttons {
+  color: white;
+  min-width: 160px;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 12px 12px;
+  padding: 10px;
+   border-style: solid;
+  border-color: white;
+  background-color: transparent;
+  cursor: pointer;
+  color: white;
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+.buttons:hover{
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+  border-style: solid;
+  border-color: transparent;
+  background-color: white;
+  color: black;
+}
+
