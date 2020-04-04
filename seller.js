@@ -1,10 +1,11 @@
 function initMap() {
-  var name = "Chai wala";
-  var number = "+911234567890";
+
+  var name = document.getElementById("lname").value;
+  var number = document.getElementById("contact").value;
   var location = [-0.123559,50.832679];
   var status = 0;
   var traffic = 0;
-  var type = "Drinks";
+  var type = document.getElementById("btype").value;
 
   var user_data = {
     name : name,
@@ -20,4 +21,5 @@ function initMap() {
 
 function saveToFirestore(user_data) {
   firebase.firestore().collection('users').add(user_data);
+  console.log("mission accomplished");
 }
