@@ -12,78 +12,7 @@
  * ANY KIND, either express or implied. See the License for the specific language governing
  * permissions and limitations under the License.
  */
-var data = 
-    [
-        {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-0.123559,
-                    50.832679
-                ]
-            },
-            "type": "Feature",
-            "properties": {
-                "category": "cafe",
-                "hours": "8am - 9:30pm",
-                "description": "Grab a freshly brewed coffee, a decadent cake and relax in our idyllic cafe. We're part of a larger chain of patisseries and cafes.",
-                "name": "Josie's Cafe Brighton",
-                "phone": "+44 1313 131313",
-                "storeid": "11"
-            }
-        },
-        {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-3.319575,
-                    52.517827
-                ]
-            },
-            "type": "Feature",
-            "properties": {
-                "category": "cafe",
-                "hours": "8am - 9:30pm",
-                "description": "Come in and unwind at this idyllic cafe with fresh coffee and home made cakes. We're part of a larger chain of patisseries and cafes.",
-                "name": "Josie's Cafe Newtown",
-                "phone": "+44 1414 141414",
-                "storeid": "12"
-            }
-        },
-        {
-            "geometry": {
-                "type": "Point",
-                "coordinates": [
-                    1.158167,
-                    52.071634
-                ]
-            },
-            "type": "Feature",
-            "properties": {
-                "category": "cafe",
-                "hours": "8am - 9:30pm",
-                "description": "Fresh coffee and delicious cakes in an snug cafe. We're part of a larger chain of patisseries and cafes.",
-                "name": "Josie's Cafe Ipswich",
-                "phone": "+44 1717 17171",
-                "storeid": "13"
-            }
-        }
-    ]
-
-
-
-
-// Escapes HTML characters in a template literal string, to prevent XSS.
-// See https://www.owasp.org/index.php/XSS_%28Cross_Site_Scripting%29_Prevention_Cheat_Sheet#RULE_.231_-_HTML_Escape_Before_Inserting_Untrusted_Data_into_HTML_Element_Content
-function sanitizeHTML(strings) {
-  const entities = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;'};
-  let result = strings[0];
-  for (let i = 1; i < arguments.length; i++) {
-    result += String(arguments[i]).replace(/[&<>'"]/g, (char) => {
-      return entities[char];
-    });
-    result += strings[i];
-  }
-  return result;
-}
+var data = {};
 
 /**
  * Initialize the Google Map.
@@ -96,15 +25,32 @@ function initMap() {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
 
-    console.log(latitude);
-    console.log(longitude);
+    console.log("mylat " + latitude);
+    console.log("mylng " + longitude);
+
+     firebase.firestore().collection("users")
+    .onSnapshot(function(snapshot) {
+        snapshot.docChanges().forEach(function(change) {
+            if (change.type === "added") {
+                //console.log("New city: ", change.doc.id);
+                data[change.doc.id] = change.doc.data();
+            }
+            if (change.type === "modified") {
+                console.log("Modified city: ", change.doc.data());
+                data[change.doc.id] = change.doc.data();
+            }
+            if (change.type === "removed") {
+                console.log("Removed city: ", change.doc.data());
+                delete data[change.doc.id];
+            }
+        });
+        const rankedStores = calculateDistances(latitude, longitude);
+        console.log(rankedStores);
+        showStoresList(rankedStores);
+    });
   });
 
   const apiKey = 'AIzaSyDVePLEyIG6-3OBo-Zo9CCVCDQtzssSl6w';
-
-  const rankedStores = calculateDistances(latitude, longitude);
-  console.log(rankedStores);
-  showStoresList(rankedStores);
 }
 
 function distance(lat1, lon1, lat2, lon2, unit) {
@@ -130,27 +76,28 @@ function distance(lat1, lon1, lat2, lon2, unit) {
 }
 
 function calculateDistances(latitude, longitude) {
-  const stores = [];
+  var stores = [];
 
-  // Build parallel arrays for the store IDs and destinations
-  data.forEach((store) => {
-    const storeLat = store.geometry.coordinates[0];
-    const storeLng = store.geometry.coordinates[1];
+  for (var i in data){
+    const storeLat = data[i].location[0];
+    const storeLng = data[i].location[1];
+
+    // console.log("latitude " + latitude);
+    // console.log("longitude " + longitude);
+    // console.log("storeLat " + storeLat);
+    // console.log("storeLng " + storeLng);
 
     var dist = distance(latitude, longitude, storeLat, storeLng, "K");
 
-    if(dist<8000)
+    if(dist<2000)
     {
-      const distanceObject = {
-                storeid: store.properties.storeid,
-                distanceVal: dist,
-              };
-      stores.push(distanceObject);
+      data[i].dist = dist;
+      stores.push(i);
     }
-  });
+  }
 
   stores.sort((first, second) => {
-    return first.distanceVal - second.distanceVal;
+    return data[first].dist - data[second].dist;
   });
 
   return stores;
@@ -186,17 +133,15 @@ function showStoresList(stores) {
     // Add store details with text formatting
     console.log(store);
 
+    //name
     const name = document.createElement('p');
     name.classList.add('place');
-
-    // const currentStore = data.getFeatureById(store.storeid);
-    // name.textContent = currentStore.getProperty('name');
-
-    name.textContent = store.storeid;
+    name.textContent = data[store].name;
     panel.appendChild(name);
+
     const distanceText = document.createElement('p');
     distanceText.classList.add('distanceText');
-    distanceText.textContent = store.distanceVal;
+    distanceText.textContent = "number : " + data[store].number + " type : " + data[store].type + " status : " + data[store].status + " traffic : " + data[store].traffic + " distance : " + data[store].dist;
     panel.appendChild(distanceText);
   });
 
