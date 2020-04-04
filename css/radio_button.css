@@ -105,10 +105,11 @@ p{
 
 .checkbox-tools:checked + label .uil,
 .checkbox-tools:not(:checked) + label .uil{
-    font-size: 24px;
+    font-size: 34px;
     line-height: 24px;
     display: block;
     padding-bottom: 10px;
+    margin: 0 auto;
 }
 
 
@@ -159,10 +160,11 @@ p{
 
 .checkbox-tools2:checked + label .uil,
 .checkbox-tools2:not(:checked) + label .uil{
-    font-size: 24px;
+    font-size: 34px;
     line-height: 24px;
     display: block;
     padding-bottom: 10px;
+    margin: 0 auto;
 }
 
 
@@ -213,10 +215,11 @@ p{
 
 .checkbox-tools3:checked + label .uil,
 .checkbox-tools3:not(:checked) + label .uil{
-    font-size: 24px;
+    font-size: 34px;
     line-height: 24px;
     display: block;
     padding-bottom: 10px;
+    margin: 0 auto;
 }
 
 
@@ -269,5 +272,32 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+
+
+/*sdnkabsvljalsbjkvbakjsbnv.jasbnv;jansjkfvna.sjnvajbv*/
+input[type="checkbox"] {
+    display:none;
+}
+
+input[type="checkbox"] + span {
+    display:inline-block;
+    width:50px;
+    height:50px;
+    padding-top: 5px; /* align the label with the image*/
+    vertical-align:middle;
+    background:url(../images/off.svg) left top no-repeat;
+    cursor:pointer;
+}
+
+input[type="checkbox"]:checked +  span {
+    background:url(../images/pin.svg) left top no-repeat;
+}
+
+
+
+/*sbdlhcabskhvbashdbvlahsbdvas jdhvnas,jdbvahsbvaksb vaksbhv*/
+
 
 
