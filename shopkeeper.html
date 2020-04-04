@@ -25,6 +25,7 @@
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/radio_button.css">
 <link rel="stylesheet" href="css/fontawesome.css">
+<link rel="stylesheet" href="css/all.css">
 
 
 <style>
@@ -78,7 +79,15 @@
           <div class="row justify-content-center mb-4">
             <div class="col-md-10 text-center">
               <h1 data-aos="fade-up">Welcome General Store</h1>
-              <p data-aos="fade-up" class=" w-75 mx-auto">Business is the activity of making one's living or making money by producing or buying and selling products</p>
+              <p data-aos="fade-up" class=" w-75 mx-auto">Business is the activity of making one's living or making money by producing or buying and selling products</p></br>
+              <!-- Start of Location Button Section :D -->
+               <label style="color: black;" data-aos="fade-up">
+                <input type="checkbox"  name="cc" class="mycheckbox"  id="myCheck"  onclick="checkFunction()"/>
+                <span></span>
+              </br>
+              <label id="label_tv">Location Off</label>
+              </label>
+              <!-- End of Location Button Section :D -->
             </div>
           </div>
         </div>
@@ -142,23 +151,36 @@
     </div>
 
   <!-- End List Section :D -->
+  <!-- Stat Of Footer Section :D -->
   <footer class="site-footer">
     <div class="container">
       <div class="col-md-6 mb-5 mb-lg-0 col-lg-3" style="margin: 0 auto; text-align: center;">
-        <!-- <a href="#" class="pl-0 pr-3"><i class="fas facebook-square"></i></a> -->
-        <i class='pl-0 pr-3 fas fa-door-open'></i>
-        <i class='pl-0 pr-3 fas fa-door-open'></i>
-        <!-- <a href="#" class="pl-3 pr-3"><i class="fas fa-instagram-square"></i></a> -->
+        <a href="#" class="pl-0 pr-3"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="pl-3 pr-3"><i class="fab fa-instagram"></i></a>
       </div>
     </div>
   </footer>
+  <!-- End Of Footer Section :D -->
 
-<script src="https://kit.fontawesome.com/bbc88b0357.js" crossorigin="anonymous"></script>
   <script src="js/jquery-3.3.1.min.js"></script>
+  <script src="js/all.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="js/aos.js"></script>
   <script src="js/main.js"></script>
   <script src="js/fontawesome.min.js"></script>
+
+<script>
+function checkFunction() {
+  var checkBox = document.getElementById("myCheck");
+  var text = document.getElementById("label_tv");
+  if (checkBox.checked == true){
+    text.innerHTML = "Location On";
+  } else {
+      text.innerHTML = "Location Off";
+  }
+}
+</script>
+
 
 </body>
 </html>
