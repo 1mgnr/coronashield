@@ -19,6 +19,7 @@ function initMap() {
   saveToFirestore(user_data);
 }
 
+
 function saveToFirestore(user_data) {
   firebase.firestore().collection('users').add(user_data);
   console.log("mission accomplished");
