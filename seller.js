@@ -22,5 +22,7 @@ function initMap() {
 
 function saveToFirestore(user_data) {
   firebase.firestore().collection('users').add(user_data);
-  console.log("mission accomplished");
+  localStorage.setItem('name','Chris');
+  let myName = localStorage.getItem('name');
+  console.log("mission accomplished " + myName);
 }

@@ -1,26 +1,14 @@
-function initMap() {
 
-  var name = document.getElementById("lname").value;
-  var number = document.getElementById("contact").value;
-  var location = [-0.123559,50.832679];
-  var status = 0;
-  var traffic = 0;
-  var type = document.getElementById("btype").value;
-
-  var user_data = {
-    name : name,
-    number : number,
-    location : location,
-    status : status,
-    traffic : traffic,
-    type : type
-  }
-
-  saveToFirestore(user_data);
+function updateStatus(id, status) {
+  firebase.firestore().collection('users').doc(id).update({
+  status: status
+});
+  console.log("status updated");
 }
 
-
-function saveToFirestore(user_data) {
-  firebase.firestore().collection('users').add(user_data);
-  console.log("mission accomplished");
+function updateTraffic(id, traffic) {
+  firebase.firestore().collection('users').doc(id).update({
+  traffic: traffic
+});
+  console.log("traffic updated");
 }
