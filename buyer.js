@@ -85,6 +85,7 @@ function sanitizeHTML(strings) {
   return result;
 }
 
+
 /**
  * Initialize the Google Map.
  */
@@ -101,11 +102,11 @@ function initMap() {
   });
 
   const apiKey = 'AIzaSyDVePLEyIG6-3OBo-Zo9CCVCDQtzssSl6w';
-
   const rankedStores = calculateDistances(latitude, longitude);
   console.log(rankedStores);
   showStoresList(rankedStores);
 }
+
 
 function distance(lat1, lon1, lat2, lon2, unit) {
   if ((lat1 == lat2) && (lon1 == lon2)) {
