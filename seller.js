@@ -7,6 +7,8 @@ function initMap() {
   var traffic = 0;
   var type = document.getElementById("btype").value;
 
+  console.log("initMap name" + name);
+
   var user_data = {
     name : name,
     number : number,
@@ -22,8 +24,10 @@ function initMap() {
 
 function saveToFirestore(user_data) {
   //alert("Form Validated and saveToFirestore .....");
-  firebase.firestore().collection('users').add(user_data);
-  localStorage.setItem('name','Chris');
-  let myName = localStorage.getItem('name');
-  console.log("mission accomplished " + myName);
+  firebase.firestore().collection('users').add(user_data)
+  .then(ref => {
+  console.log('Added document with ID: ', ref.id);
+  localStorage.setItem('name',ref.id);
+  console.log("saveToFirestore mission accomplished");
+});
 }
