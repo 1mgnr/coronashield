@@ -1,7 +1,7 @@
 function initMap() {
 
-  var name = document.getElementById("business_name").value;
-  var number = document.getElementById("business_contact").value;
+  var name = document.getElementById("name").value;
+  var number = document.getElementById("contact").value;
   var location = [-0.123559,50.832679];
   var status = 0;
   var traffic = 0;
