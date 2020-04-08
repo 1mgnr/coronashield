@@ -27,7 +27,7 @@
 }
 </style>
 </head>
-<body>
+<body onload="fetchUser()">
   <div class="site-mobile-menu">
     <div class="site-mobile-menu-header">
       <div class="site-mobile-menu-close mt-3">
@@ -94,17 +94,17 @@
                 <div class="col-md-6 center-div z-bigger">
                    <p class=" mx-auto" style="color: black; margin-left: 20px;">Traffic</p>
                   <input class="checkbox-tools" type="radio" name="tools" id="tool-1" checked/>
-                  <label class="for-checkbox-tools" for="tool-1" onclick="updateTraffic('BZlMXNDt5uancKH6AxXo', 0)">
+                  <label class="for-checkbox-tools" for="tool-1" onclick="updateTraffic(localStorage.getItem('storeId'), 0)">
                     <i class='uil fas fa-user'></i>
                     Low
                   </label>
                   <input class="checkbox-tools" type="radio" name="tools" id="tool-2"/>
-                  <label class="for-checkbox-tools" for="tool-2" onclick="updateTraffic('BZlMXNDt5uancKH6AxXo', 1)">
+                  <label class="for-checkbox-tools" for="tool-2" onclick="updateTraffic(localStorage.getItem('storeId'), 1)">
                     <i class='uil fas fa-user-friends'></i>
                     Medium
                   </label>
                   <input class="checkbox-tools" type="radio" name="tools" id="tool-3"/>
-                  <label class="for-checkbox-tools" for="tool-3" onclick="updateTraffic('BZlMXNDt5uancKH6AxXo', 2)">
+                  <label class="for-checkbox-tools" for="tool-3" onclick="updateTraffic(localStorage.getItem('storeId'), 2)">
                     <i class='uil fas fa-users'></i>
                     High
                   </label>
@@ -117,12 +117,12 @@
                 <div class="col-md-6 center-div z-bigger">
                    <p class=" mx-auto" style="color: black; margin-left: 20px;">Shop Status</p>
                     <input class="checkbox-tools3" type="radio" name="shop_radio" id="tool-5" checked/>
-                  <label class="for-checkbox-tools3" for="tool-5" onclick="updateStatus('BZlMXNDt5uancKH6AxXo', 0)">
+                  <label class="for-checkbox-tools3" for="tool-5" onclick="updateStatus(localStorage.getItem('storeId'), 0)">
                     <i class='uil fas fa-door-closed'></i>
                     Closed
                   </label>
                   <input class="checkbox-tools2" type="radio" name="shop_radio" id="tool-4"/>
-                  <label class="for-checkbox-tools2" for="tool-4" onclick="updateStatus('BZlMXNDt5uancKH6AxXo', 1)">
+                  <label class="for-checkbox-tools2" for="tool-4" onclick="updateStatus(localStorage.getItem('storeId'), 1)">
                     <i class='uil uil-line-alt fas fa-door-open'></i>
                     Open
                   </label>
@@ -176,6 +176,49 @@ function checkFunction() {
   } else {
       text.innerHTML = "Location Off";
   }
+}
+
+function fetchUser() {
+  let doc = firebase.firestore().collection('users').doc(localStorage.getItem("storeId"));
+
+  let observer = doc.onSnapshot(docSnapshot => {
+    console.log(`Received doc snapshot: ${docSnapshot}`);
+    
+    var status = docSnapshot.data().status;
+    console.log('Received doc snapshot status: ' + status);
+
+    var traffic = docSnapshot.data().traffic;
+    console.log('Received doc snapshot traffic: ' + traffic);
+
+    if(status == 0){
+      document.getElementById("tool-5").checked = true;
+      document.getElementById("tool-4").checked = false;
+      traffic = 0;
+    }
+    else{
+      document.getElementById("tool-5").checked = false;
+      document.getElementById("tool-4").checked = true;
+    }
+
+    if(traffic == 0){
+      document.getElementById("tool-1").checked = true;
+      document.getElementById("tool-2").checked = false;
+      document.getElementById("tool-3").checked = false;
+    }
+    else if(traffic == 1){
+      document.getElementById("tool-1").checked = false;
+      document.getElementById("tool-2").checked = true;
+      document.getElementById("tool-3").checked = false;
+    }
+    else{
+      document.getElementById("tool-1").checked = false;
+      document.getElementById("tool-2").checked = false;
+      document.getElementById("tool-3").checked = true;
+    }
+
+  }, err => {
+    console.log(`Encountered error: ${err}`);
+  });
 }
 
 function updateStatus(id, status) {

@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="css/all.css">
         
       </head>
-      <body>
+      <body onload="initMap()">
         <div class="site-mobile-menu">
           <div class="site-mobile-menu-header">
             <div class="site-mobile-menu-close mt-3">
@@ -55,23 +55,27 @@
           </div>
         </div>  
         
-        <!-- List Section :D -->
+        
          <div class="site-section bg-light">
           <div class="container">
             <div class="row">
               <div class="col-md-12 mb-5" data-aos="fade" style="margin: 0 auto;">
                 <div class="p-5 bg-white" style="margin-top: -150px;">
-                        <!-- List Here -->
-                  <div id="fName"></div>
+
+                <!--   <ul>
+                  div id="fName"></div>
                   <div id="lName"></div>
                   <div id="age"></div>
                   <div id="color"></div>
+                  </ul>
+ -->
 
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <!-- End List Section :D -->
         <!-- Stat Of Footer Section :D -->
           <footer class="site-footer">
@@ -84,12 +88,19 @@
           </footer>
         <!-- End Of Footer Section :D -->
 
+         <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-firestore.memory.js"></script>
+  <!-- Don't change the format for any other products. -->
+  <script src="https://www.gstatic.com/firebasejs/7.13.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.13.2/firebase-analytics.js"></script>
+  <script defer type="text/javascript" src="firebase-config.js"></script>
+
 
       <script src="js/jquery-3.3.1.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script src="js/aos.js"></script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
      var family = {
         firstName : "John",
         openStais  : "open",
@@ -101,8 +112,7 @@ document.getElementById("fName").innerHTML = family.firstName;
 document.getElementById("lName").innerHTML = family.openStais;
 document.getElementById("age").innerHTML = family.traffic;
 document.getElementById("color").innerHTML = family.eyeColor;
-
-</script>
+        </script> -->
       <script src="js/typed.js"></script>
                 <script>
                 var typed = new Typed('.typed-words', {
@@ -117,8 +127,9 @@ document.getElementById("color").innerHTML = family.eyeColor;
                 </script>
 
       <script src="js/main.js"></script>
-      <script src="js/all.js"></script>
       <script src="buyer.js"></script>
+      <script src="js/all.js"></script>
+      
       
       </body>
     </html>

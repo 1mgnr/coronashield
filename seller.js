@@ -1,8 +1,8 @@
-function initMap() {
+function initMap(latitude, longitude) {
 
   var name = document.getElementById("name").value;
   var number = document.getElementById("contact").value;
-  var location = [-0.123559,50.832679];
+  var location = [latitude, longitude];
   var status = 0;
   var traffic = 0;
   var type = document.getElementById("btype").value;
@@ -24,10 +24,23 @@ function initMap() {
 
 function saveToFirestore(user_data) {
   //alert("Form Validated and saveToFirestore .....");
-  firebase.firestore().collection('users').add(user_data)
-  .then(ref => {
-  console.log('Added document with ID: ', ref.id);
-  localStorage.setItem('name',ref.id);
-  console.log("saveToFirestore mission accomplished");
-});
+  var id = localStorage.getItem("storeId");
+  console.log("id= " + id);
+  if(id != null)
+  {
+    firebase.firestore().collection('users').doc(id).update(user_data)
+    .then(ref => {
+      console.log("saveToFirestore mission accomplished");
+      window.location = "shopkeeper.html";
+    });
+  }
+  else{
+    firebase.firestore().collection('users').add(user_data)
+    .then(ref => {
+      console.log('Added document with ID: ', ref.id);
+      localStorage.setItem('storeId',ref.id);
+      console.log("saveToFirestore mission accomplished");
+      window.location = "shopkeeper.html";
+    });
+  }
 }

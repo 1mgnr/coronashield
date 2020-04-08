@@ -13,7 +13,7 @@
         <link rel="stylesheet" href="css/all.css">
         
       </head>
-  <body>
+  <body onload="fetchUser()">
   
   <div class="site-wrap">
 
@@ -138,7 +138,17 @@
               event.preventDefault();
               event.stopPropagation();
             }else{
-              initMap();
+              event.preventDefault();
+              event.stopPropagation();
+              navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                console.log("mylat " + latitude);
+                console.log("mylng " + longitude);
+
+                initMap(latitude, longitude);
+              });
             }
             form.classList.add('was-validated');
           }, false);
@@ -161,6 +171,27 @@
   <script src="js/main.js"></script>
   <script src="seller.js"></script>
   <script src="js/all.js"></script>
+
+ <!-- set for business type pending -->
+  <script>
+    function fetchUser() {
+      var id = localStorage.getItem("storeId");
+      if(id != ""){
+      let doc = firebase.firestore().collection('users').doc(id);
+
+      let observer = doc.get().then(function(docSnapshot) {
+      // check and do something with the data here.
+        console.log(`Received doc snapshot: ${docSnapshot}`);
+        
+        document.getElementById("name").value = docSnapshot.data().name;
+        document.getElementById("contact").value = docSnapshot.data().number;
+
+        var btype = docSnapshot.data().type;
+        console.log('Received doc snapshot btype: ' + btype);
+      });
+    }
+  }
+  </script>
   
 
 </html>
